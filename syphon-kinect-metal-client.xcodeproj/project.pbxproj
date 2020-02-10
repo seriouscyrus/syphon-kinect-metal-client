@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E0C505F23F1E5F100FFF8DD /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0C505E23F1E5F100FFF8DD /* Renderer.swift */; };
+		6E0C506123F1F17800FFF8DD /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 6E0C506023F1F17800FFF8DD /* Shaders.metal */; };
+		6E0C506423F1F27500FFF8DD /* ShaderTypes.h in Sources */ = {isa = PBXBuildFile; fileRef = 6E0C506323F1F27500FFF8DD /* ShaderTypes.h */; };
 		6E4A846D23DA3DA6005F8D6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A846C23DA3DA6005F8D6C /* AppDelegate.swift */; };
-		6E4A846F23DA3DA6005F8D6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A846E23DA3DA6005F8D6C /* ViewController.swift */; };
+		6E4A846F23DA3DA6005F8D6C /* DisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A846E23DA3DA6005F8D6C /* DisplayViewController.swift */; };
 		6E4A847123DA3DA7005F8D6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E4A847023DA3DA7005F8D6C /* Assets.xcassets */; };
 		6E4A847423DA3DA7005F8D6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E4A847223DA3DA7005F8D6C /* Main.storyboard */; };
 		6E4A848023DA3DA8005F8D6C /* syphon_kinect_metal_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A847F23DA3DA8005F8D6C /* syphon_kinect_metal_clientTests.swift */; };
+		6E4A848C23DA3DF8005F8D6C /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A848B23DA3DF8005F8D6C /* Metal.framework */; };
+		6E4A848E23DA3E00005F8D6C /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A848D23DA3E00005F8D6C /* MetalKit.framework */; };
+		6E4A849623DA3EA4005F8D6C /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; };
+		6E4A849723DA3EA4005F8D6C /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E4A849A23DA3FFB005F8D6C /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A849823DA3FFB005F8D6C /* ControlsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,10 +32,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		6E4A849323DA3E29005F8D6C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6E4A849723DA3EA4005F8D6C /* Syphon.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		6E0C505E23F1E5F100FFF8DD /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		6E0C506023F1F17800FFF8DD /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		6E0C506223F1F27400FFF8DD /* syphon-kinect-metal-client-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "syphon-kinect-metal-client-Bridging-Header.h"; sourceTree = "<group>"; };
+		6E0C506323F1F27500FFF8DD /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
 		6E4A846923DA3DA6005F8D6C /* syphon-kinect-metal-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "syphon-kinect-metal-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E4A846C23DA3DA6005F8D6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6E4A846E23DA3DA6005F8D6C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		6E4A846E23DA3DA6005F8D6C /* DisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayViewController.swift; sourceTree = "<group>"; };
 		6E4A847023DA3DA7005F8D6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E4A847323DA3DA7005F8D6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6E4A847523DA3DA7005F8D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -35,6 +61,10 @@
 		6E4A847B23DA3DA8005F8D6C /* syphon-kinect-metal-clientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "syphon-kinect-metal-clientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E4A847F23DA3DA8005F8D6C /* syphon_kinect_metal_clientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = syphon_kinect_metal_clientTests.swift; sourceTree = "<group>"; };
 		6E4A848123DA3DA8005F8D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E4A848B23DA3DF8005F8D6C /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		6E4A848D23DA3E00005F8D6C /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		6E4A849423DA3E9D005F8D6C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
+		6E4A849823DA3FFB005F8D6C /* ControlsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +72,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E4A848C23DA3DF8005F8D6C /* Metal.framework in Frameworks */,
+				6E4A849623DA3EA4005F8D6C /* Syphon.framework in Frameworks */,
+				6E4A848E23DA3E00005F8D6C /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +94,7 @@
 				6E4A846B23DA3DA6005F8D6C /* syphon-kinect-metal-client */,
 				6E4A847E23DA3DA8005F8D6C /* syphon-kinect-metal-clientTests */,
 				6E4A846A23DA3DA6005F8D6C /* Products */,
+				6E4A848A23DA3DF8005F8D6C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,11 +111,16 @@
 			isa = PBXGroup;
 			children = (
 				6E4A846C23DA3DA6005F8D6C /* AppDelegate.swift */,
-				6E4A846E23DA3DA6005F8D6C /* ViewController.swift */,
+				6E4A846E23DA3DA6005F8D6C /* DisplayViewController.swift */,
+				6E0C505E23F1E5F100FFF8DD /* Renderer.swift */,
+				6E0C506323F1F27500FFF8DD /* ShaderTypes.h */,
+				6E0C506023F1F17800FFF8DD /* Shaders.metal */,
+				6E4A849823DA3FFB005F8D6C /* ControlsViewController.swift */,
 				6E4A847023DA3DA7005F8D6C /* Assets.xcassets */,
 				6E4A847223DA3DA7005F8D6C /* Main.storyboard */,
 				6E4A847523DA3DA7005F8D6C /* Info.plist */,
 				6E4A847623DA3DA7005F8D6C /* syphon_kinect_metal_client.entitlements */,
+				6E0C506223F1F27400FFF8DD /* syphon-kinect-metal-client-Bridging-Header.h */,
 			);
 			path = "syphon-kinect-metal-client";
 			sourceTree = "<group>";
@@ -95,6 +134,16 @@
 			path = "syphon-kinect-metal-clientTests";
 			sourceTree = "<group>";
 		};
+		6E4A848A23DA3DF8005F8D6C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E4A849423DA3E9D005F8D6C /* Syphon.framework */,
+				6E4A848D23DA3E00005F8D6C /* MetalKit.framework */,
+				6E4A848B23DA3DF8005F8D6C /* Metal.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -105,6 +154,7 @@
 				6E4A846523DA3DA6005F8D6C /* Sources */,
 				6E4A846623DA3DA6005F8D6C /* Frameworks */,
 				6E4A846723DA3DA6005F8D6C /* Resources */,
+				6E4A849323DA3E29005F8D6C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -145,6 +195,7 @@
 				TargetAttributes = {
 					6E4A846823DA3DA6005F8D6C = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					6E4A847A23DA3DA8005F8D6C = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -195,8 +246,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E4A846F23DA3DA6005F8D6C /* ViewController.swift in Sources */,
+				6E0C506423F1F27500FFF8DD /* ShaderTypes.h in Sources */,
+				6E0C505F23F1E5F100FFF8DD /* Renderer.swift in Sources */,
+				6E4A846F23DA3DA6005F8D6C /* DisplayViewController.swift in Sources */,
 				6E4A846D23DA3DA6005F8D6C /* AppDelegate.swift in Sources */,
+				6E4A849A23DA3FFB005F8D6C /* ControlsViewController.swift in Sources */,
+				6E0C506123F1F17800FFF8DD /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,11 +402,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "syphon-kinect-metal-client/syphon_kinect_metal_client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EZGTK3XF77;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "syphon-kinect-metal-client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -359,6 +419,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seriouscyrus.syphon-kinect-metal-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "syphon-kinect-metal-client/syphon-kinect-metal-client-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -367,11 +429,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "syphon-kinect-metal-client/syphon_kinect_metal_client.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = EZGTK3XF77;
 				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "syphon-kinect-metal-client/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -379,6 +446,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.seriouscyrus.syphon-kinect-metal-client";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "syphon-kinect-metal-client/syphon-kinect-metal-client-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
