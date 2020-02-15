@@ -13,6 +13,7 @@ import MetalKit
 class DisplayViewController: NSViewController {
     var syphonServerDirectory: SyphonServerDirectory!
     var syphonClient: SyphonMetalClient?
+    var pointCloudRenderer: KinectRenderer?
     
     let niMateSyphonServerAppName:String = "Delicode NI mate"
     
@@ -27,6 +28,7 @@ class DisplayViewController: NSViewController {
         }
         view.device = MTLCreateSystemDefaultDevice()
         view.enableSetNeedsDisplay = true
+        
         //view.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         print(view)
         print(view.device ?? "No device")
@@ -35,11 +37,14 @@ class DisplayViewController: NSViewController {
     }
     
     override func viewDidAppear() {
+        guard let view = view as? MTKView else {
+            return
+        }
         super.viewDidAppear()
+        pointCloudRenderer = KinectRenderer(with: view)
         print("View = \(view)")
         print("View is kind of mtkView :\(view.isKind(of: MTKView.self))")
                 NotificationCenter.default.addObserver(self, selector: #selector(handleSyphonServerAnnouce(notification:)), name: NSNotification.Name.SyphonServerAnnounce, object: nil)
-        
     }
 
     override var representedObject: Any? {
@@ -63,10 +68,16 @@ class DisplayViewController: NSViewController {
             serverName.hasSuffix("_depth") else {
                 return
         }
-        let params = [SyphonServerDescriptionAppNameKey: serverAppName,
-                      SyphonServerDescriptionNameKey: serverName]
-        guard let client = SyphonMetalClient(serverDescription: userInfo, device: device, colorPixelFormat: MTLPixelFormat.bgra8Unorm, options: nil, newFrameHandler: { (frameClient) in
-            print("Has new frame \(String(describing: frameClient?.newFrameImage()))")
+
+        guard let client = SyphonMetalClient(serverDescription: userInfo, device: device, colorPixelFormat: MTLPixelFormat.bgra8Unorm, options: nil, newFrameHandler: { [weak self] (frameClient) in
+            guard let self = self,
+            let frameClient = frameClient else {
+                return
+            }
+            self.pointCloudRenderer?.depthTexture = frameClient.newFrameImage()
+            self.view.needsDisplay = true
+            
+            //print("Has new frame \(String(describing: frameClient?.newFrameImage()))")
         }) else {
             print("Failed to create client")
             return

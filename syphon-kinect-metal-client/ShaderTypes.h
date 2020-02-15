@@ -11,18 +11,25 @@
 
 #include <simd/simd.h>
 
-typedef enum VertexInputIndex {
+typedef enum KinectVertexInputIndex {
     VertexInputIndexVertices = 0,
-    VertexInputIndexViewportSize = 1
+    VertexInputIndexUniforms
 } VertexInputIndex;
 
-typedef enum TextureIndex {
-    TextureIndexBaseColor = 0
-} TextureIndex;
+typedef enum KinectTextureIndex {
+    KinectTextureIndexDepthImage = 0,
+    KinectTextureIndexRGBImage
+} KinectTextureIndex;
 
 typedef struct {
-    vector_float3 position;
-    vector_float2 textureCood;
-} Vertex;
+    simd_float3 position;
+    simd_float3 colour;
+    simd_float2 textureCood;
+} KinectPointCloudVertex;
+
+typedef struct {
+    simd_float4x4 modelViewMatrix;
+    simd_float4x4 projectionMatrix;
+} Uniforms;
 
 #endif
