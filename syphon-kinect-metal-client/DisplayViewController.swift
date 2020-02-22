@@ -70,7 +70,7 @@ class DisplayViewController: NSViewController {
         }
         
         if serverName.hasSuffix("_depth") {
-            guard let client = SyphonMetalClient(serverDescription: userInfo, device: device, colorPixelFormat: MTLPixelFormat.bgra8Unorm, options: nil, newFrameHandler: { [weak self] (frameClient) in
+            guard let client = SyphonMetalClient(serverDescription: userInfo, device: device, colorPixelFormat: MTLPixelFormat.rgba8Uint, options: nil, newFrameHandler: { [weak self] (frameClient) in
                 guard let self = self,
                 let frameClient = frameClient else {
                     return

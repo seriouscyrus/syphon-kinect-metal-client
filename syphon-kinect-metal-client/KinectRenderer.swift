@@ -26,6 +26,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
     private var projectionMatrix:matrix_float4x4 = matrix_identity_float4x4
     private var modelTransform:matrix_float4x4 = matrix_identity_float4x4
     private var modelMatrix:matrix_float4x4 = matrix_identity_float4x4
+    private var frameNumber:Int = 0
     
     init?(with view:MTKView) {
         guard let device = view.device,
@@ -82,9 +83,13 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         }
         self.depthPipelineState = depthPipelineState
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
-        self.projectionMatrix = matrix_perspective_left_hand(65.0 * (Float.pi / 180.0), aspectRatio, 0.01, 10);
-        self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.5, 0.5, -2.0),
-                                                   simd_float3(0.5, 0.5, 0.5),
+        let rotation = radians_from_degrees(180.0);
+        let axis = simd_float3(0.0, 0.0,  1.0)
+        self.modelMatrix = matrix4x4_rotation(rotation, axis);
+        //self.modelMatrix = matrix4x4_translation(simd_float3(-0.5, -0.5, 0.0))
+        self.projectionMatrix = matrix_perspective_left_hand(35.0 * (Float.pi / 180.0), aspectRatio, 0.01, 10);
+        self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.0, 0.0, -2.0),
+                                                   simd_float3(0.0, 0.0, 0.0),
                                                    simd_float3(0.0, 1.0, 0.0))
     }
     
@@ -97,12 +102,13 @@ class KinectRenderer: NSObject, MTKViewDelegate {
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        print("CHnaging view size")
+        print("Changing view size")
         let aspect = Float(size.width / size.height)
-        projectionMatrix = matrix_perspective_left_hand(65.0 * (Float.pi / 180.0), aspect, 0.01, 10);
+        projectionMatrix = matrix_perspective_left_hand(35.0 * (Float.pi / 180.0), aspect, 0.01, 10);
     }
     
     func draw(in view: MTKView) {
+        frameNumber += 1
         guard let commandBuffer = commandQueue.makeCommandBuffer(),
             let currentDrawable = view.currentDrawable,
             let renderPassDescritor = view.currentRenderPassDescriptor,
@@ -111,7 +117,12 @@ class KinectRenderer: NSObject, MTKViewDelegate {
                 print("Failed to create command buffer")
                 return
         }
+        // Rotate the model
+        let rotation = Float(frameNumber) * 0.005 + Float.pi;
+        let axis = simd_float3(0.0, 1.0,  0.0)
+        modelTransform = matrix4x4_rotation(rotation, axis);
         updateUniforms()
+
         commandBuffer.label = "Command Buffer"
         renderEncoder.label = "Render Encoder"
         renderEncoder.setRenderPipelineState(self.pipelineState)
@@ -133,18 +144,21 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         } else {
             pointCloudSize = simd_float2(1.0 / aspect, 1.0)
         }
+        let minx = -(pointCloudSize.x / 2.0)
+        let miny = -(pointCloudSize.y / 2.0)
+        print("pointcloudSize = \(pointCloudSize)")
         var array = [KinectPointCloudVertex]()
         let rowPointStep = pointCloudSize.y / (textureSize.y - 1.0)
         let columnPointStep = pointCloudSize.x / (textureSize.x - 1.0)
         let texPixelWidth = 1.0 / textureSize.x
         let texPixelHeight = 1.0 / textureSize.y
-        let rowTexStep = (1.0 - texPixelWidth) / (textureSize.y - 1.0)
-        let columnTexStep = (1.0 - texPixelHeight) / (textureSize.x - 1.0)
+        let rowTexStep = (1.0 - texPixelHeight) / (textureSize.y - 1.0)
+        let columnTexStep = (1.0 - texPixelWidth) / (textureSize.x - 1.0)
         for row in 0..<Int(textureSize.y) {
-            let rowPointPos = Float(row) * rowPointStep
+            let rowPointPos = Float(row) * rowPointStep + minx
             let rowTexCoord = (Float(row) * rowTexStep) + (texPixelHeight / 2.0)
             for column in 0..<Int(textureSize.x) {
-                let columnPointPos = Float(column) * columnPointStep
+                let columnPointPos = Float(column) * columnPointStep + miny
                 let columnTexCoord = (Float(column) * columnTexStep) + (texPixelWidth / 2.0)
                 var vertex = KinectPointCloudVertex()
                 vertex.position = simd_float3(rowPointPos, columnPointPos, 0.0)

@@ -23,30 +23,30 @@ typedef struct {
 vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
                                                 constant KinectPointCloudVertex *vertices [[ buffer(VertexInputIndexVertices) ]],
                                                 constant KinectUniforms &uniforms [[ buffer(VertexInputIndexUniforms) ]],
-                                                texture2d<half> depthTexture [[ texture(KinectTextureIndexDepthImage) ]]) {
+                                                texture2d<uint> depthTexture [[ texture(KinectTextureIndexDepthImage) ]]) {
     VertexOut out;
     constexpr sampler textureSampler (mag_filter::linear,
                                       min_filter::linear);
 
     KinectPointCloudVertex vert = vertices[vertexID];
-    // Sample the texture to obtain a color
-    const half4 depthSample = depthTexture.sample(textureSampler, vert.textureCood);
-    //int rcomp = (int)(depthSample.r * 255);
-    //int gcomp = (int)(depthSample.g * 255);
-    float depth = (depthSample.r * 255) * 32.0 + (depthSample.g * 255);
-    //int intDepth = rcomp * 32 + gcomp;
-    float normalised = depth / (255 * 32 + 255);
-    float4 adjustedPosition = float4(vert.position.x, vert.position.y, normalised * 10.0, 1.0);
+    const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood);
+    // image format is rgba, but shader uses bgra
+    uint depth = depthSample.b << 5 | depthSample.g;
+
+    //uint depth = depthSample.b * 32.0 + depthSample.g;
+    float adjustedDepth = (float)depth / 1000.0;
+    float4 adjustedPosition = float4(vert.position.x, vert.position.y, adjustedDepth, 1.0);
     float4 colour = float4(vert.colour.rgb, 1.0);
-    if (depthSample.b != 0.0) {
-        colour = float4(1.0, 0.0, 0.0, 1.0);
+    if (depthSample.r != 0.0) {
+        colour = float4(1.0, 1.0, 1.0, 1.0);
+        out.pointSize = 2.0;
     } else {
-        colour = float4(0.0, 0.0, 0.0, 0.0);
+        colour = float4(0.3, 0.3, 0.3, 1.0);
+        out.pointSize = 2.0;
     }
     out.position = uniforms.projectionMatrix * uniforms.modelViewMatrix * adjustedPosition;
     out.colour = colour;
     out.texCoord = vert.textureCood;
-    out.pointSize = 1.0;
     return out;
 }
 
