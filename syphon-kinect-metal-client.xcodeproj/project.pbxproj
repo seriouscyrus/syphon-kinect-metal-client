@@ -20,6 +20,7 @@
 		6E4A849623DA3EA4005F8D6C /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; };
 		6E4A849723DA3EA4005F8D6C /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4A849A23DA3FFB005F8D6C /* ControlsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A849823DA3FFB005F8D6C /* ControlsViewController.swift */; };
+		6EC254492401400700B17622 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC254472401400700B17622 /* AAPLMathUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,9 @@
 		6E4A848D23DA3E00005F8D6C /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		6E4A849423DA3E9D005F8D6C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		6E4A849823DA3FFB005F8D6C /* ControlsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsViewController.swift; sourceTree = "<group>"; };
+		6EC254452400662900B17622 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		6EC254472401400700B17622 /* AAPLMathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
+		6EC254482401400700B17622 /* AAPLMathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 				6E4A847523DA3DA7005F8D6C /* Info.plist */,
 				6E4A847623DA3DA7005F8D6C /* syphon_kinect_metal_client.entitlements */,
 				6E0C506223F1F27400FFF8DD /* syphon-kinect-metal-client-Bridging-Header.h */,
+				6EC254482401400700B17622 /* AAPLMathUtilities.h */,
+				6EC254472401400700B17622 /* AAPLMathUtilities.m */,
 			);
 			path = "syphon-kinect-metal-client";
 			sourceTree = "<group>";
@@ -137,6 +143,7 @@
 		6E4A848A23DA3DF8005F8D6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6EC254452400662900B17622 /* GLKit.framework */,
 				6E4A849423DA3E9D005F8D6C /* Syphon.framework */,
 				6E4A848D23DA3E00005F8D6C /* MetalKit.framework */,
 				6E4A848B23DA3DF8005F8D6C /* Metal.framework */,
@@ -249,6 +256,7 @@
 				6E0C506423F1F27500FFF8DD /* ShaderTypes.h in Sources */,
 				6E0C505F23F1E5F100FFF8DD /* KinectRenderer.swift in Sources */,
 				6E4A846F23DA3DA6005F8D6C /* DisplayViewController.swift in Sources */,
+				6EC254492401400700B17622 /* AAPLMathUtilities.m in Sources */,
 				6E4A846D23DA3DA6005F8D6C /* AppDelegate.swift in Sources */,
 				6E4A849A23DA3FFB005F8D6C /* ControlsViewController.swift in Sources */,
 				6E0C506123F1F17800FFF8DD /* Shaders.metal in Sources */,

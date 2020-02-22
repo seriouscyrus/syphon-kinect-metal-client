@@ -11,33 +11,49 @@ import MetalKit
 class KinectRenderer: NSObject, MTKViewDelegate {
     private let device:MTLDevice
     private let pointcloudBuffer:MTLBuffer
-    private let pipelineState: MTLRenderPipelineState
-    private let commandQueue: MTLCommandQueue
+    private let uniformsBuffer:MTLBuffer
+    private let pipelineState:MTLRenderPipelineState
+    private let depthPipelineState:MTLDepthStencilState
+    private let commandQueue:MTLCommandQueue
 
     var depthTexture:MTLTexture?
+    var rgbTexture:MTLTexture?
     
     // Default size for kinect depth buffer
-    private var textureSize: simd_float2 = simd_float2(512.0, 424.0)
-    private var numberOfVertices: UInt = 512 * 424
+    private var textureSize:simd_float2 = simd_float2(512.0, 424.0)
+    private var numberOfVertices:Int = 512 * 424
+    private var viewMatrix:matrix_float4x4 = matrix_identity_float4x4
+    private var projectionMatrix:matrix_float4x4 = matrix_identity_float4x4
+    private var modelTransform:matrix_float4x4 = matrix_identity_float4x4
+    private var modelMatrix:matrix_float4x4 = matrix_identity_float4x4
     
     init?(with view:MTKView) {
-        guard let metalDevice = view.device,
-            let metalCommandQueue = metalDevice.makeCommandQueue() else {
+        guard let device = view.device,
+            let commandQueue = device.makeCommandQueue() else {
                 print("view has no device")
                 return nil
         }
-        device = metalDevice
-        commandQueue = metalCommandQueue
-        
+        self.device = device
+        self.commandQueue = commandQueue
+        view.depthStencilPixelFormat = MTLPixelFormat.depth32Float
+
         // Create the buffer
         let pointCloudVertices = KinectRenderer.pointCloud(for: textureSize)
-        guard let buffer = metalDevice.makeBuffer(bytes: pointCloudVertices,
-                                                  length: MemoryLayout.size(ofValue: pointCloudVertices),
-                                                  options: MTLResourceOptions.storageModeShared) else {
-                                                    return nil
+        let bufferLength = MemoryLayout<KinectPointCloudVertex>.size * pointCloudVertices.count
+        guard let pointcloudBuffer = device.makeBuffer(bytes: pointCloudVertices,
+                                                       length: bufferLength,
+                                                       options: MTLResourceOptions.storageModeShared) else {
+                                                        return nil
         }
-        pointcloudBuffer = buffer
-        guard let library = metalDevice.makeDefaultLibrary() else {
+        self.pointcloudBuffer = pointcloudBuffer
+        print("Size of all kinect vertices = \(bufferLength)")
+        print("Size of kinect vertex = \(KinectPointCloudVertex.self):\(MemoryLayout<KinectPointCloudVertex>.size)")
+        print("Size of kinect uniforms = \(KinectUniforms.self):\(MemoryLayout<KinectUniforms>.size)")
+        guard let uniformsBuffer = device.makeBuffer(length: MemoryLayout<KinectUniforms>.size, options: MTLResourceOptions.storageModeShared) else {
+            return nil
+        }
+        self.uniformsBuffer = uniformsBuffer
+        guard let library = device.makeDefaultLibrary() else {
             print("Failed to create default library")
             return nil
         }
@@ -50,20 +66,61 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat
+        pipelineDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat
         do {
-            pipelineState = try metalDevice.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            self.pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch {
             print("Failed to create pipeline state \(error)")
             return nil
         }
+        let depthPipelineDescriptor = MTLDepthStencilDescriptor()
+        depthPipelineDescriptor.label = "Depth Pointcloud pipeline"
+        depthPipelineDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
+        depthPipelineDescriptor.isDepthWriteEnabled = true
+        guard let depthPipelineState = device.makeDepthStencilState(descriptor: depthPipelineDescriptor) else {
+            return nil
+        }
+        self.depthPipelineState = depthPipelineState
+        let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
+        self.projectionMatrix = matrix_perspective_left_hand(65.0 * (Float.pi / 180.0), aspectRatio, 0.01, 10);
+        self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.5, 0.5, -1), simd_float3(0.5, 0.5, 0.0), simd_float3(0.0, 1.0, 0.0))
+    }
+    
+    func updateUniforms() {
+        var uniforms = KinectUniforms()
+        let modelTransformMatrix = matrix_multiply(modelMatrix, modelTransform)
+        uniforms.modelViewMatrix = matrix_multiply(viewMatrix, modelTransformMatrix)
+        uniforms.projectionMatrix = projectionMatrix
+        memcpy(uniformsBuffer.contents(), &uniforms, MemoryLayout.size(ofValue: uniforms))
     }
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        
+        print("CHnaging view size")
+        let aspect = Float(size.width / size.height)
+        projectionMatrix = matrix_perspective_left_hand(65.0 * (Float.pi / 180.0), aspect, 0.01, 10);
     }
     
     func draw(in view: MTKView) {
-        
+        guard let commandBuffer = commandQueue.makeCommandBuffer(),
+            let currentDrawable = view.currentDrawable,
+            let renderPassDescritor = view.currentRenderPassDescriptor,
+            let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescritor)
+            else {
+                print("Failed to create command buffer")
+                return
+        }
+        updateUniforms()
+        commandBuffer.label = "Command Buffer"
+        renderEncoder.label = "Render Encoder"
+        renderEncoder.setRenderPipelineState(self.pipelineState)
+        renderEncoder.setDepthStencilState(self.depthPipelineState)
+        renderEncoder.setVertexBuffer(self.pointcloudBuffer, offset: 0, index: Int(VertexInputIndexVertices.rawValue))
+        renderEncoder.setVertexBuffer(self.uniformsBuffer, offset: 0, index: Int(VertexInputIndexUniforms.rawValue))
+        renderEncoder.setVertexTexture(self.depthTexture, index: Int(KinectTextureIndexDepthImage.rawValue))
+        renderEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: self.numberOfVertices)
+        renderEncoder.endEncoding()
+        commandBuffer.present(currentDrawable)
+        commandBuffer.commit()
     }
     
     static private func pointCloud(for textureSize:simd_float2) -> [KinectPointCloudVertex] {
@@ -96,5 +153,4 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         }
         return array
     }
-    
 }

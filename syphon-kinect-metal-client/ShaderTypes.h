@@ -30,6 +30,6 @@ typedef struct {
 typedef struct {
     simd_float4x4 modelViewMatrix;
     simd_float4x4 projectionMatrix;
-} Uniforms;
+} KinectUniforms;
 
 #endif
