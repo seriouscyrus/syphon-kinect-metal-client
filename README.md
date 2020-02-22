@@ -1,7 +1,7 @@
 # syphon-kinect-metal-client
-Syphon client for use with Kinect2 inputs from Delicode NI Mate
+Syphon client for use with Kinect2 inputs from Delicode NI Mate (https://ni-mate.com), to render a point cloud from the encoded depth syphon stream.
 
-A simple implementation of syphon in metal and swift
+A simple implementation of syphon in metal and swift for MacOS
 
 WIP.
 
