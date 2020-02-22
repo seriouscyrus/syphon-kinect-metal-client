@@ -83,7 +83,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         self.depthPipelineState = depthPipelineState
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
         self.projectionMatrix = matrix_perspective_left_hand(65.0 * (Float.pi / 180.0), aspectRatio, 0.01, 10);
-        self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.5, 0.5, -1), simd_float3(0.5, 0.5, 0.0), simd_float3(0.0, 1.0, 0.0))
+        self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.0, 0.0, -0.6), simd_float3(0.5, 0.5, 0.0), simd_float3(0.0, 1.0, 0.0))
     }
     
     func updateUniforms() {
