@@ -51,7 +51,10 @@ class DisplayViewController: NSViewController {
         view.delegate = pointCloudRenderer
         print("View = \(view)")
         print("View is kind of mtkView :\(view.isKind(of: MTKView.self))")
-                NotificationCenter.default.addObserver(self, selector: #selector(handleSyphonServerAnnouce(notification:)), name: NSNotification.Name.SyphonServerAnnounce, object: nil)
+                NotificationCenter.default.addObserver(self,
+                                                       selector: #selector(handleSyphonServerAnnouce(notification:)),
+                                                       name: NSNotification.Name.SyphonServerAnnounce,
+                                                       object: nil)
     }
     
     @objc func handleSyphonServerAnnouce(notification: Notification) {
@@ -70,7 +73,11 @@ class DisplayViewController: NSViewController {
         }
         
         if serverName.hasSuffix("_depth") {
-            guard let client = SyphonMetalClient(serverDescription: userInfo, device: device, colorPixelFormat: MTLPixelFormat.rgba8Uint, options: nil, newFrameHandler: { [weak self] (frameClient) in
+            guard let client = SyphonMetalClient(serverDescription: userInfo,
+                                                 device: device,
+                                                 colorPixelFormat: MTLPixelFormat.rgba8Uint,
+                                                 options: nil,
+                                                 newFrameHandler: { [weak self] (frameClient) in
                 guard let self = self,
                 let frameClient = frameClient else {
                     return
@@ -86,11 +93,6 @@ class DisplayViewController: NSViewController {
             print("client = \(client)")
 
         }
-
-
-
     }
-
-
 }
 

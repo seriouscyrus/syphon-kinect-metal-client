@@ -50,7 +50,8 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         print("Size of all kinect vertices = \(bufferLength)")
         print("Size of kinect vertex = \(KinectPointCloudVertex.self):\(MemoryLayout<KinectPointCloudVertex>.size)")
         print("Size of kinect uniforms = \(KinectUniforms.self):\(MemoryLayout<KinectUniforms>.size)")
-        guard let uniformsBuffer = device.makeBuffer(length: MemoryLayout<KinectUniforms>.size, options: MTLResourceOptions.storageModeShared) else {
+        guard let uniformsBuffer = device.makeBuffer(length: MemoryLayout<KinectUniforms>.size,
+                                                     options: MTLResourceOptions.storageModeShared) else {
             return nil
         }
         self.uniformsBuffer = uniformsBuffer
@@ -125,12 +126,12 @@ class KinectRenderer: NSObject, MTKViewDelegate {
 
         commandBuffer.label = "Command Buffer"
         renderEncoder.label = "Render Encoder"
-        renderEncoder.setRenderPipelineState(self.pipelineState)
-        renderEncoder.setDepthStencilState(self.depthPipelineState)
-        renderEncoder.setVertexBuffer(self.pointcloudBuffer, offset: 0, index: Int(VertexInputIndexVertices.rawValue))
-        renderEncoder.setVertexBuffer(self.uniformsBuffer, offset: 0, index: Int(VertexInputIndexUniforms.rawValue))
-        renderEncoder.setVertexTexture(self.depthTexture, index: Int(KinectTextureIndexDepthImage.rawValue))
-        renderEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: self.numberOfVertices)
+        renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setDepthStencilState(depthPipelineState)
+        renderEncoder.setVertexBuffer(pointcloudBuffer, offset: 0, index: Int(VertexInputIndexVertices.rawValue))
+        renderEncoder.setVertexBuffer(uniformsBuffer, offset: 0, index: Int(VertexInputIndexUniforms.rawValue))
+        renderEncoder.setVertexTexture(depthTexture, index: Int(KinectTextureIndexDepthImage.rawValue))
+        renderEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: numberOfVertices)
         renderEncoder.endEncoding()
         commandBuffer.present(currentDrawable)
         commandBuffer.commit()
