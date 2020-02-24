@@ -15,7 +15,7 @@ using namespace metal;
 
 typedef struct {
     float4 position [[ position ]];
-    float4 colour;
+    half4 colour;
     float2 texCoord;
     float pointSize [[ point_size ]];
 } VertexOut;
@@ -36,12 +36,12 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
     uint depth = depthSample.r * 255.0 + depthSample.g;
     float adjustedDepth = (float)depth / 5000.0;
     float4 adjustedPosition = float4(vert.position.x, vert.position.y, adjustedDepth, 1.0);
-    float4 colour = float4(vert.colour.rgb, 1.0);
+    half4 colour;
     if (depthSample.b != 0.0) {
-        colour = float4(1.0, 1.0, 1.0, 1.0);
+        colour = half4(1.0, 1.0, 1.0, 1.0);
         out.pointSize = 2.0;
     } else {
-        colour = float4(0.3, 0.3, 0.3, 1.0);
+        colour = half4(0.3, 0.3, 0.3, 1.0);
         out.pointSize = 2.0;
     }
     out.position = uniforms.projectionMatrix * uniforms.modelViewMatrix * adjustedPosition;
@@ -62,7 +62,7 @@ kinectPointCloudRGBFragmentFunction(VertexOut in [[stage_in]],
     const half4 colorSample = colorTexture.sample(textureSampler, in.texCoord);
 
     // We return the color of the texture
-    return float4(colorSample);
+    return float4(colorSample * in.colour);
 }
 
 fragment float4
