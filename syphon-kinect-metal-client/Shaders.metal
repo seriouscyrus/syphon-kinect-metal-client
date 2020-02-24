@@ -29,15 +29,15 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
                                       min_filter::linear);
 
     KinectPointCloudVertex vert = vertices[vertexID];
-    const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood);
+    const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood).bgra;
     // image format is rgba, but shader uses bgra
-    uint depth = depthSample.b << 5 | depthSample.g;
+    //uint depth = depthSample.r << 5 | depthSample.g;
 
-    //uint depth = depthSample.b * 32.0 + depthSample.g;
-    float adjustedDepth = (float)depth / 1000.0;
+    uint depth = depthSample.r * 255.0 + depthSample.g;
+    float adjustedDepth = (float)depth / 5000.0;
     float4 adjustedPosition = float4(vert.position.x, vert.position.y, adjustedDepth, 1.0);
     float4 colour = float4(vert.colour.rgb, 1.0);
-    if (depthSample.r != 0.0) {
+    if (depthSample.b != 0.0) {
         colour = float4(1.0, 1.0, 1.0, 1.0);
         out.pointSize = 2.0;
     } else {
