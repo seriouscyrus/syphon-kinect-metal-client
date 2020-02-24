@@ -12,7 +12,8 @@ import MetalKit
 
 class DisplayViewController: NSViewController {
     var syphonServerDirectory: SyphonServerDirectory!
-    var syphonClient: SyphonMetalClient?
+    var syphonKinectDepthClient: SyphonMetalClient?
+    var syphonKinectRgbClient: SyphonMetalClient?
     var pointCloudRenderer: KinectRenderer?
     
     let niMateSyphonServerAppName:String = "Delicode NI mate"
@@ -89,7 +90,28 @@ class DisplayViewController: NSViewController {
                 print("Failed to create client")
                 return
             }
-            self.syphonClient = client
+            self.syphonKinectDepthClient = client
+            print("client = \(client)")
+
+        }
+        if serverName.hasSuffix("_rgb") {
+            guard let client = SyphonMetalClient(serverDescription: userInfo,
+                                                 device: device,
+                                                 colorPixelFormat: MTLPixelFormat.bgra8Unorm,
+                                                 options: nil,
+                                                 newFrameHandler: { [weak self] (frameClient) in
+                guard let self = self,
+                let frameClient = frameClient else {
+                    return
+                }
+                self.pointCloudRenderer?.rgbTexture = frameClient.newFrameImage()
+                self.view.needsDisplay = true
+                //print("Has new frame \(String(describing: frameClient?.newFrameImage()))")
+            }) else {
+                print("Failed to create client")
+                return
+            }
+            self.syphonKinectRgbClient = client
             print("client = \(client)")
 
         }

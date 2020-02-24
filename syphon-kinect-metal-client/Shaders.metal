@@ -29,9 +29,9 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
                                       min_filter::linear);
 
     KinectPointCloudVertex vert = vertices[vertexID];
-    const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood).bgra;
+    
     // image format is rgba, but shader uses bgra
-    //uint depth = depthSample.r << 5 | depthSample.g;
+    const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood).bgra;
 
     uint depth = depthSample.r * 255.0 + depthSample.g;
     float adjustedDepth = (float)depth / 5000.0;
@@ -51,19 +51,19 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
 }
 
 // Fragment function
-//fragment float4
-//kinectPointCloudFragmentFunction(VertexOut in [[stage_in]],
-//               texture2d<half> colorTexture [[ texture(KinectTextureIndexRGBImage) ]])
-//{
-//    constexpr sampler textureSampler (mag_filter::linear,
-//                                      min_filter::linear);
-//
-//    // Sample the texture to obtain a color
-//    const half4 colorSample = colorTexture.sample(textureSampler, in.texCoord);
-//
-//    // We return the color of the texture
-//    return float4(colorSample);
-//}
+fragment float4
+kinectPointCloudRGBFragmentFunction(VertexOut in [[stage_in]],
+               texture2d<half> colorTexture [[ texture(KinectTextureIndexRGBImage) ]])
+{
+    constexpr sampler textureSampler (mag_filter::linear,
+                                      min_filter::linear);
+
+    // Sample the texture to obtain a color
+    const half4 colorSample = colorTexture.sample(textureSampler, in.texCoord);
+
+    // We return the color of the texture
+    return float4(colorSample);
+}
 
 fragment float4
 kinectPointCloudFragmentFunction(VertexOut in [[stage_in]])

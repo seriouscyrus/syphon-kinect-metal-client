@@ -61,12 +61,13 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         }
         
         let vertexFunction = library.makeFunction(name: "kinectPointCloudVertexFunction")
-        let fragmentFunction = library.makeFunction(name: "kinectPointCloudFragmentFunction")
-        
+        //let fragmentFunction = library.makeFunction(name: "kinectPointCloudFragmentFunction")
+        let fragmentRGBFunction = library.makeFunction(name: "kinectPointCloudRGBFragmentFunction")
+
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.label = "Pointcloud pipeline"
         pipelineDescriptor.vertexFunction = vertexFunction
-        pipelineDescriptor.fragmentFunction = fragmentFunction
+        pipelineDescriptor.fragmentFunction = fragmentRGBFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = view.colorPixelFormat
         pipelineDescriptor.depthAttachmentPixelFormat = view.depthStencilPixelFormat
         do {
@@ -131,6 +132,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         renderEncoder.setVertexBuffer(pointcloudBuffer, offset: 0, index: Int(VertexInputIndexVertices.rawValue))
         renderEncoder.setVertexBuffer(uniformsBuffer, offset: 0, index: Int(VertexInputIndexUniforms.rawValue))
         renderEncoder.setVertexTexture(depthTexture, index: Int(KinectTextureIndexDepthImage.rawValue))
+        renderEncoder.setFragmentTexture(rgbTexture, index: Int(KinectTextureIndexRGBImage.rawValue))
         renderEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: numberOfVertices)
         renderEncoder.endEncoding()
         commandBuffer.present(currentDrawable)
