@@ -47,9 +47,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
                                                         return nil
         }
         self.pointcloudBuffer = pointcloudBuffer
-        print("Size of all kinect vertices = \(bufferLength)")
-        print("Size of kinect vertex = \(KinectPointCloudVertex.self):\(MemoryLayout<KinectPointCloudVertex>.size)")
-        print("Size of kinect uniforms = \(KinectUniforms.self):\(MemoryLayout<KinectUniforms>.size)")
+
         guard let uniformsBuffer = device.makeBuffer(length: MemoryLayout<KinectUniforms>.size,
                                                      options: MTLResourceOptions.storageModeShared) else {
             return nil
@@ -76,6 +74,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
             print("Failed to create pipeline state \(error)")
             return nil
         }
+        
         let depthPipelineDescriptor = MTLDepthStencilDescriptor()
         depthPipelineDescriptor.label = "Depth Pointcloud pipeline"
         depthPipelineDescriptor.depthCompareFunction = MTLCompareFunction.lessEqual
@@ -84,6 +83,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
             return nil
         }
         self.depthPipelineState = depthPipelineState
+        
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
         let rotation = radians_from_degrees(180.0);
         let axis = simd_float3(0.0, 0.0,  1.0)
