@@ -38,9 +38,14 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
     float4 adjustedPosition = float4(vert.position.x, vert.position.y, adjustedDepth, 1.0);
     half4 colour;
     if (depthSample.b != 0.0) {
+        // HACKPOINT This is the colour that have been identified as a user
+        // The order is Red, Green, Blue, Alpha
+        // The values can only be between 0.0 and 1.0
         colour = half4(1.0, 1.0, 1.0, 1.0);
+        // HACKPOINT You can change the point size here, making the look finer or coarser
         out.pointSize = 2.0;
     } else {
+        // HACKPOINT This is the colour used for anything not a user
         colour = half4(0.3, 0.3, 0.3, 1.0);
         out.pointSize = 2.0;
     }

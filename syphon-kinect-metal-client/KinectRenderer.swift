@@ -85,10 +85,13 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         self.depthPipelineState = depthPipelineState
         
         let aspectRatio = Float(view.drawableSize.width / view.drawableSize.height)
-        let rotation = radians_from_degrees(180.0);
-        let axis = simd_float3(0.0, 0.0,  1.0)
-        self.modelMatrix = matrix4x4_rotation(rotation, axis);
-        //self.modelMatrix = matrix4x4_translation(simd_float3(-0.5, -0.5, 0.0))
+
+        // HACKPOINT comment or uncomment the following 3 lines to enable or disable rotation
+        // let rotation = radians_from_degrees(180.0);
+        // let axis = simd_float3(0.0, 0.0,  1.0)
+        // self.modelMatrix = matrix4x4_rotation(rotation, axis);
+        
+        // Don't change anything past here
         self.projectionMatrix = matrix_perspective_left_hand(35.0 * (Float.pi / 180.0), aspectRatio, 0.01, 10);
         self.viewMatrix = matrix_look_at_left_hand(simd_float3(0.0, 0.0, -2.0),
                                                    simd_float3(0.0, 0.0, 0.0),
@@ -120,6 +123,7 @@ class KinectRenderer: NSObject, MTKViewDelegate {
                 return
         }
         // Rotate the model
+        // HACKPOINT change the number value here to change speed of roation
         let rotation = Float(frameNumber) * 0.005 + Float.pi;
         let axis = simd_float3(0.0, 1.0,  0.0)
         modelTransform = matrix4x4_rotation(rotation, axis);
