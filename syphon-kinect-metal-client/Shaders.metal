@@ -34,6 +34,7 @@ vertex VertexOut kinectPointCloudVertexFunction(uint vertexID [[ vertex_id ]],
     const uint4 depthSample = depthTexture.sample(textureSampler, vert.textureCood).bgra;
 
     uint depth = depthSample.r * 255.0 + depthSample.g;
+    // HACKPOINT change the following number to change how deep the model is
     float adjustedDepth = (float)depth / 5000.0;
     float4 adjustedPosition = float4(vert.position.x, vert.position.y, adjustedDepth, 1.0);
     half4 colour;
