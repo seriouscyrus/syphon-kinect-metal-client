@@ -59,6 +59,9 @@ class KinectRenderer: NSObject, MTKViewDelegate {
         }
         
         let vertexFunction = library.makeFunction(name: "kinectPointCloudVertexFunction")
+        // HACKPOINT of the following 2 lines starting "let fragmentFunction", one *must* be commented out and one active
+        // Uncomment the first one to mix rgb and the point cloud
+        // Uncomment the second to use the colours you define
         //let fragmentFunction = library.makeFunction(name: "kinectPointCloudFragmentFunction")
         let fragmentRGBFunction = library.makeFunction(name: "kinectPointCloudRGBFragmentFunction")
 
