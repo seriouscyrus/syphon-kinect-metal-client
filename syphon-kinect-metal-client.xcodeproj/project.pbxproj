@@ -17,8 +17,8 @@
 		6E4A848023DA3DA8005F8D6C /* syphon_kinect_metal_clientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A847F23DA3DA8005F8D6C /* syphon_kinect_metal_clientTests.swift */; };
 		6E4A848C23DA3DF8005F8D6C /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A848B23DA3DF8005F8D6C /* Metal.framework */; };
 		6E4A848E23DA3E00005F8D6C /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A848D23DA3E00005F8D6C /* MetalKit.framework */; };
-		6E4A849623DA3EA4005F8D6C /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; };
-		6E4A849723DA3EA4005F8D6C /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A849423DA3E9D005F8D6C /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6EB4C8712422999C007E1366 /* Syphon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB4C86F24229905007E1366 /* Syphon.framework */; };
+		6EB4C8722422999C007E1366 /* Syphon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB4C86F24229905007E1366 /* Syphon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6EC254492401400700B17622 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC254472401400700B17622 /* AAPLMathUtilities.m */; };
 /* End PBXBuildFile section */
 
@@ -39,7 +39,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6E4A849723DA3EA4005F8D6C /* Syphon.framework in Embed Frameworks */,
+				6EB4C8722422999C007E1366 /* Syphon.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,7 +63,7 @@
 		6E4A848123DA3DA8005F8D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E4A848B23DA3DF8005F8D6C /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		6E4A848D23DA3E00005F8D6C /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
-		6E4A849423DA3E9D005F8D6C /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
+		6EB4C86F24229905007E1366 /* Syphon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Syphon.framework; sourceTree = "<group>"; };
 		6EC254452400662900B17622 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		6EC254472401400700B17622 /* AAPLMathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
 		6EC254482401400700B17622 /* AAPLMathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E4A848C23DA3DF8005F8D6C /* Metal.framework in Frameworks */,
-				6E4A849623DA3EA4005F8D6C /* Syphon.framework in Frameworks */,
+				6EB4C8712422999C007E1366 /* Syphon.framework in Frameworks */,
 				6E4A848E23DA3E00005F8D6C /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,8 +140,8 @@
 		6E4A848A23DA3DF8005F8D6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6EB4C86F24229905007E1366 /* Syphon.framework */,
 				6EC254452400662900B17622 /* GLKit.framework */,
-				6E4A849423DA3E9D005F8D6C /* Syphon.framework */,
 				6E4A848D23DA3E00005F8D6C /* MetalKit.framework */,
 				6E4A848B23DA3DF8005F8D6C /* Metal.framework */,
 			);
